@@ -1,0 +1,69 @@
+[build-system]
+requires = [
+    "setuptools>=80.3.1",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isia_wiki"
+version = "0.0.1"
+description = "isia_wiki is an app built with SPLENT (https://www.splent.io)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "watchdog",
+    "locust",
+]
+core = [
+    "splent_framework",
+]
+
+[tool.splent]
+cli_version = "1.15.0"
+features = [
+    "splent-io/splent_feature_theme",
+    "splent-io/splent_feature_settings",
+    "splent-io/splent_feature_auth",
+    "splent-io/splent_feature_media",
+    "splent-io/splent_feature_session_filesystem",
+    "splent-io/splent_feature_courses",
+    "splent-io/splent_feature_skin_isia",
+]
+features_dev = [
+    "splent-io/splent_feature_admin",
+]
+features_prod = []
+spl = "openwiki_spl"
+
+[tool.splent.spl_model]
+mirror = "uvlhub.io"
+doi = ""
+concept_doi = ""
+version = ""
+file = "openwiki_spl.uvl"
+
+[tool.splent.layout]
+base_template = "base_template.html"
+hooks = [
+    "layout.head.css",
+    "layout.sidebar.top",
+    "layout.anonymous_sidebar",
+    "layout.authenticated_sidebar",
+    "layout.sidebar.authenticated.items",
+    "layout.navbar.anonymous",
+    "layout.navbar.authenticated",
+    "layout.footer",
+    "layout.scripts",
+]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]

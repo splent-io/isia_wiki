@@ -1,0 +1,85 @@
+services:
+
+  isia_wiki_web:
+    build:
+      context: /workspace
+      dockerfile: /workspace/isia_wiki/docker/Dockerfile.isia_wiki.dev
+    container_name: isia_wiki_web
+    volumes:
+      - ${SPLENT_HOST_PROJECT_DIR}:/workspace
+    env_file:
+      - /workspace/isia_wiki/docker/.env
+    environment:
+      # Wire the e2e layer to the grid below. The target URL is resolved by
+      # the browser, so it must name a host the browser container can reach.
+      SELENIUM_GRID_URL: http://isia_wiki_selenium_hub:4444
+      SELENIUM_TARGET_URL: http://isia_wiki_web:5000
+    ports:
+      - "5859:5000"
+      # Locust web interface, served from inside this container by
+      # 'splent locust'.
+      - "8089:8089"
+    depends_on:
+      isia_wiki_db:
+        condition: service_healthy
+    networks:
+      - splent_network
+    command: [ "tail", "-f", "/dev/null" ]
+
+  isia_wiki_db:
+    image: mariadb:11.4
+    container_name: isia_wiki_db
+    env_file:
+      - /workspace/isia_wiki/docker/.env
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "33919:3306"
+    volumes:
+      - isia_wiki_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb -u$${MARIADB_USER} -p$${MARIADB_PASSWORD} -e 'SELECT 1'"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    networks:
+      - splent_network
+
+  isia_wiki_selenium_hub:
+    image: selenium/hub:latest
+    container_name: isia_wiki_selenium_hub
+    networks:
+      - splent_network
+
+  isia_wiki_selenium_chrome:
+    image: selenium/node-chrome:latest
+    container_name: isia_wiki_selenium_chrome
+    shm_size: 2gb
+    environment:
+      SE_EVENT_BUS_HOST: isia_wiki_selenium_hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+    depends_on:
+      - isia_wiki_selenium_hub
+    networks:
+      - splent_network
+
+  isia_wiki_selenium_firefox:
+    image: selenium/node-firefox:latest
+    container_name: isia_wiki_selenium_firefox
+    shm_size: 2gb
+    environment:
+      SE_EVENT_BUS_HOST: isia_wiki_selenium_hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+    depends_on:
+      - isia_wiki_selenium_hub
+    networks:
+      - splent_network
+
+volumes:
+  isia_wiki_db_data:
+
+networks:
+  splent_network:
+    external: true
