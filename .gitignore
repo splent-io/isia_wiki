@@ -43,3 +43,8 @@ node_modules/
 
 # Features symlinks
 features
+
+# Runtime state, never code. instance/protected_uploads holds restricted
+# files: material withheld until a release date. Committing it would put
+# the very content this product protects into a repository.
+src/instance/
