@@ -48,3 +48,8 @@ features
 # files: material withheld until a release date. Committing it would put
 # the very content this product protects into a repository.
 src/instance/
+
+# Per-machine lifecycle state, written by the CLI: it records when each
+# feature was installed and migrated ON THIS MACHINE. Sharing it between
+# machines is meaningless and makes every deployment pull conflict.
+splent.manifest.json
