@@ -29,11 +29,11 @@ features = [
     "splent_io/splent_feature_settings@v0.2.2",
     "splent_io/splent_feature_media@v0.5.1",
     "splent_io/splent_feature_elasticsearch@v0.1.1",
-    "splent_io/splent_feature_skin_lab@v0.2.0",
-    "splent_io/splent_feature_theme@v0.4.0",
+    "splent_io/splent_feature_skin_lab",
+    "splent_io/splent_feature_theme",
     "splent_io/splent_feature_auth@v1.9.0",
-    "splent_io/splent_feature_search@v0.3.0",
-    "splent_io/splent_feature_courses@v0.5.0",
+    "splent_io/splent_feature_search",
+    "splent_io/splent_feature_courses",
 ]
 features_dev = [
     "splent_io/splent_feature_admin@v1.2.0",
@@ -41,13 +41,9 @@ features_dev = [
 features_prod = []
 spl = "openwiki_spl"
 
-# Where the SPL model itself comes from. The name above is not enough
-# to download anything, so the DOI travels with the product and any
-# clone of this repository can resolve the model from UVLHub alone.
 [tool.splent.spl_model]
 mirror = "uvlhub.io"
 doi = "10.5281/zenodo.21708566"
-# Same line, every version. Used to report that a newer model exists.
 concept_doi = ""
 version = "2"
 file = "openwiki_spl.uvl"
