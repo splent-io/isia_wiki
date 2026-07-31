@@ -69,3 +69,15 @@ hooks = [
 where = [
     "src",
 ]
+
+# ── What this product decides about its features ──────────────────────────
+# The features declare these and their defaults in their own pyproject; here
+# are only the ones this product answers differently. Versioned and reviewable,
+# unlike docker/.env, which holds passwords and is not committed.
+[tool.splent.config]
+SITE_NAME = "isia.us.es"
+SEARCH_PLACEHOLDER = "es:Buscar en esta wiki|en:Search this wiki"
+AUTH_LOGIN_LAYOUT = "public_base.html"
+COURSES_NAME_PREFIX = "ISIA"
+COURSES_DESCRIPTION_TEMPLATE = "Material docente de Ingeniería del Software, curso {year}"
+COURSES_DEFAULT_CATEGORIES = "Teoría,Prácticas,Proyecto,Evaluación"
